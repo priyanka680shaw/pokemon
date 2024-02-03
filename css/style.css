@@ -1,0 +1,117 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body{
+    background-image: linear-gradient(to top, #e64ae6 0%, #b3cf82 100%);
+}
+
+#cardContainer{
+    width: 100%;
+   
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    flex-wrap: wrap;
+    background-image: linear-gradient(-20deg, #ddd6f3 0%, #faaca8 100%, #faaca8 100%);
+}
+
+h1{
+    text-align: center;
+    font-size: 50px;
+    color: rgb(238, 146, 146);
+    margin: 20px 0px;
+}
+
+input{
+    padding: 10px px;
+    font-size: 15px;
+    font-weight: bolder;
+    color: green;
+    border-radius: 20px;
+    border: none;
+    text-align: center;
+    cursor: pointer;
+}
+button{
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bolder;
+    color: green;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+select{
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bolder;
+    color: green;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+.inputBox{
+    width: 75%;
+    padding: 20px 200px;
+    background-color: pink;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 30px;
+}
+.cards{
+    width: 270px;
+    height: 350px;
+    border: 10px solid black;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 20px;
+    background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+}
+
+.innerCards{
+    width: 100%;
+    height: auto;
+    border: 2px solid rgb(96, 90, 90);
+}
+
+.images{
+    width: 100%;
+    height: 235px;
+    background-color: red;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.caption{
+    width: 100%;
+    background-color: rgb(197, 125, 16);
+    padding: 12px;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font: bolder;
+    text-transform: capitalize;
+}
+.images>img{
+    /* transform: scale(2); */
+    width: 500px;
+    border: 10px solid white;
+    background-color: rgb(140, 148, 148);
+}
+
+.images>img:hover{
+    transform: scale(1.1);
+}
+

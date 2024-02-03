@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body onload="pokemonDropDown()">
+    
+    <!-- <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/43.png"> -->
+    <main>
+        <div class="container">
+            <h1>Pokemon</h1>
+             <div class="inputBox">
+                <input type="text" placeholder="search Value">
+                <button class="search">Srarch</button>
+                <select id="pokemonTypes" value =" nn"></select>
+                
+                <button onclick="pokemonFilterhHandler()">Filter by type</button>
+                <button onclick="allPokemon()">reset</button>
+             </div>
+             <section>
+                <div id="cardContainer">
+                    
+                    <!-- cards -->
+                </div>
+             </section>
+        </div>
+    </main>
+    <script>
+
+
+        /***   select option value 
+         * get all pokemon type namein dropown list 
+         * *****/
+         const cardContainer = document.querySelector("#cardContainer");
+        const select = document.querySelector("#pokemonTypes");
+        const pokemonTypeApi = `https://pokeapi.co/api/v2/type/`;
+        
+        const typeNmaeURL = {};
+        /*********
+         * All pokemon Data
+         * */
+         var arr = [];
+
+          async function allPokemon() {
+            cardContainer.innerHTML = " ";
+                try {
+                let data = await fetch(`https://pokeapi.co/api/v2/pokemon/`);
+                let x = await data.json();
+                let y = x.results;
+
+                await Promise.all(
+                    y.map(async (pokemon) => {
+                    let response = await fetch(pokemon.url);
+                    let result = await response.json();
+                    //   console.log(result);
+                    arr.push({
+                        name: result.name,
+                        img: result.sprites.front_default,
+                        weight : result.weight
+                    });
+                    })
+                );
+
+          //console.log(arr);
+                } catch (error) {
+            console.error("Error fetching data:", error);
+            }
+           // const img="";
+            arr.forEach(element => {
+                 fetch(element.img)
+                .then((response)=>{
+                    //console.log(response.url);
+                    let img = response.url;
+                    console.log(img);
+                    let name = element.name;
+                    console.log(name);
+             
+                    //console.log("pokeimg" ,img);
+                    cardContainer.innerHTML += `     
+                            <div class="cards">
+                                <div class="innerCards">
+                                    <figure class="images">
+                                        <img src="${img}" alt="image">
+                                    </figure>
+                                    <figcaption class="caption">
+                                        ${name}
+                                    </figcaption>
+                                </div>
+                            </div>`
+                })
+            });
+        
+        // console.log(arr);
+        // console.log(arr[0].name);
+        //display(arr);
+        }
+    //   console.log(arr);
+     
+      
+      //console.log(arr[0].name);
+    //   function display(arr){
+    //     //setTimeout(console.log(arr[0].name),5000);
+    //     console.log(arr);
+    //     console.log(arr[0].name);
+    //   }
+      window.load = allPokemon();
+   
+        /**All pokemon Data**/
+
+        function pokemonDropDown(){
+            const pokemonType = fetch(pokemonTypeApi)
+            pokemonType.then((pokemonTypeResponse)=>{
+                return pokemonTypeResponse.json();
+            })
+            .then((pokemonTypeData) =>{
+                for(let i=0; i<pokemonTypeData.results.length; i++){
+                    const type = pokemonTypeData.results[i];
+                    const typename = type.name;
+                    const typeurl = type.url;
+                    typeNmaeURL[typename] = typeurl;
+                   // console.log(typename,typeurl);
+                    const option = document.createElement('option');
+                    option.innerText = typename;
+                    option.setAttribute('value' , typename);
+                    option.setAttribute('url',typeurl);
+                    option.setAttribute('id' ,'optionData');
+                    select.append(option);
+
+                }
+            })
+        }
+        /***   select option value  end  *****/
+
+
+        /**************** filter by type function **********/
+        function pokemonFilterhHandler(){
+            console.log(typeNmaeURL);
+            const selectValue = select.value;
+            const pokemonetypes = typeNmaeURL[selectValue];
+            fetch(pokemonetypes)
+            .then((pokemonetypesResponse)=>{
+                return pokemonetypesResponse.json();
+            })
+            .then((pokemonetypesResponseData)=>{
+                const fetchedPokemon = pokemonetypesResponseData.pokemon;
+                console.log(fetchedPokemon.length);
+                
+                cardContainer.innerHTML = " ";
+                for(let i=0; i<30; i++){
+                        const pokemon = fetchedPokemon[i].pokemon;
+                        const pokemonName = pokemon.name;
+                        const pokemonUrl = pokemon.url;
+                        console.log(pokemonName,pokemonUrl);
+                        console.log(pokemon);
+                        fetch(pokemonUrl)
+                        .then((pokemonimageResponse)=>{
+                            return pokemonimageResponse.json();
+                        })
+                        .then((pokemonimageResponseData)=>(pokemonimageResponseData.sprites.front_default))
+                        .then((imgUrl)=> {
+                            cardContainer.innerHTML += `     
+                            <div class="cards">
+                                <div class="innerCards">
+                                    <figure class="images">
+                                        <img src="${imgUrl}" alt="image">
+                                    </figure>
+                                    <figcaption class="caption">
+                                        ${pokemonName}
+                                    </figcaption>
+                                </div>
+                            </div>`
+                            
+                        });
+                    
+                }
+                //console.log(fetchedPokemon);
+            })
+
+            //fetched pokemon iimages//
+            // function pokemonImage(pokemonUrl){
+            //     fetch(pokemonUrl)
+            //     .then((Response)=> response.json())
+            //     .then((getRsponse)=>getRsponse)
+            //     console.log(getRsponse)
+
+            // }
+
+            
+
+            // console.log(selectValue);
+            // const optionUrl = document.querySelector("#optionData");
+            // const filterType = optionUrl.attributes.url;
+            // console.log(filterType);
+            
+
+        }
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//         function pokemonSearchHandler(){
+//             const searchval = searchValue.value;
+//             fetch(`https://pokeapi.co/api/v2/pokemon/${searchval}`)
+//             .then((reciveDataFromFetch)=>{
+//                 return reciveDataFromFetch.json();
+//             })
+//             .then((reveiveObjDta)=>{
+//                 console.log(reveiveObjDta.
+// sprites.front_default
+// );
+//             })
+//         }
+    </script>
+    <!-- <script src="./js/script.js"></script> -->
+</body>
+</html>
